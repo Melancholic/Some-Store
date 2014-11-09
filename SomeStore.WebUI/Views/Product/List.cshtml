@@ -1,0 +1,20 @@
+﻿@model SomeStore.WebUI.Models.ProductsListViewModel
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<center>
+<h2>Products</h2>
+<div class="pager">
+    @Html.PageLinks(Model.PagingInfo, x=>Url.Action("List",new{Page=x}))
+</div>
+    @foreach(var p in Model.Products){
+          Html.RenderPartial("ProductInList", p);
+    }
+        
+<div class="pager">
+    @Html.PageLinks(Model.PagingInfo, x=>Url.Action("List",new{Page=x}))
+</div>
+
+</center>

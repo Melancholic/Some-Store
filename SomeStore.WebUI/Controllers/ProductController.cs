@@ -18,10 +18,13 @@ namespace SomeStore.WebUI.Controllers
         }
 
         //For lists view
-        public ViewResult List(int page=1)
+        public ViewResult List(string category, int page=1)
         {
             ProductsListViewModel viewModel = new ProductsListViewModel();
             viewModel.Products = repository.Products
+                //if category equals null, return all, else
+                //return products with categories
+                .Where(p=>category==null || p.Category==category)
                 .OrderBy(p => p.ProductID)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize);
@@ -29,8 +32,11 @@ namespace SomeStore.WebUI.Controllers
             {
                 CurrentPage=page,
                 ItemsPerPage=PageSize,
-                TotalItems=repository.Products.Count()
+                TotalItems = repository.Products
+                        .Where(p => category == null || p.Category == category)
+                        .Count()
             };
+            viewModel.CurrentCategory = category;
             return View(viewModel);
         }
 

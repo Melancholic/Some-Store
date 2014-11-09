@@ -14,6 +14,10 @@ namespace SomeStore.WebUI.Helpers
             PagingInfo pagingInfo,
             Func<int, string> pageUrl)
         {
+            if (pagingInfo.TotalPages == 1)
+            {
+                return MvcHtmlString.Empty;
+            }
             StringBuilder res = new StringBuilder();
             for (int i = 1; i <= pagingInfo.TotalPages; ++i)
             {

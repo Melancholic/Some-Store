@@ -23,12 +23,35 @@ namespace SomeStore.WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //for empty request: exmpl.dom
             routes.MapRoute(
-                null,
-                "page/{page}",
-                new { Controller = "Product", action = "List" }
+                "Empty",
+                "",
+                new { Controller = "Product", action = "List", category=(string)null, page=1 }
+             );
+            //For pagination request: exmpl.dom/page_23
+            routes.MapRoute(
+                "Paginate",
+                "page_{page}",
+                new { Controller = "Product", action = "List", category = (string)null },
+                new { page = @"\d+" }
         );
+            //for categories request: exmpl.dom/books 
+            routes.MapRoute(
+                "Categories",
+                "{category}",
+                new { Controller = "Product", action = "List", page = 1 }
+             );
+            //for categories and pagination request: exmpl.dom/books/page_12 
+            routes.MapRoute(
+                "CategoriesAndPagination",
+                "{category}/Page_{page}",
+                new { Controller = "Product", action = "List" },
+                new { page = @"\d+" }
+             );
 
+
+            //Default
             routes.MapRoute(
                 "Default", // Имя маршрута
                 "{controller}/{action}/{id}", // URL-адрес с параметрами
